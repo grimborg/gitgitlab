@@ -1,0 +1,4 @@
+gitpython==0.3.2.RC1
+keyring==3.3
+opster==4.1
+python-gitlab==0.6

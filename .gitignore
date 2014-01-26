@@ -1,0 +1,7 @@
+*.pyc
+*.swp
+*.egg-info
+doc/_build
+*sublime*
+build
+dist
