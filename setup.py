@@ -1,9 +1,6 @@
 from setuptools import setup
 import sys
 
-if 'register' in sys.argv or 'upload' in sys.argv:
-    raise Exception("I don't want to be on PyPI!")
-
 setup(
     name='GitGitlab',
     version='1.0',
