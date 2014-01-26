@@ -7,8 +7,6 @@ GitGitLab allows you to create Gitlab projects and set them as remote source for
 Installation
 ------------
 
-Install system-wide:
-
 .. code::
 
 	sudo pip install gitgitlab
@@ -69,4 +67,4 @@ Obtaining help
 More information
 ----------------
 
-See also the `project documentation <http://gitgitlab.readthedocs.com>`_.
+See also the `project documentation <http://gitgitlab.readthedocs.org>`_.
