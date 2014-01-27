@@ -26,6 +26,25 @@ Usage
 	$ git remotes
 	  gitlab
 
+Using a custom Gitlab server
+----------------------------
+
+By default, gitgitlab uses https://gitlab.com as the Gitlab server url. If you are using your own Gitlab server, you can configure it using git config.
+
+Configure your custom Gitlab server globally:
+
+.. code::
+
+	$ git config --global --replace-all gitlab.url <your server url>
+
+Configure your custom Gitlab server only for the current repository:
+
+.. code::
+
+	$ git config --replace-all gitlab.url <your server url>
+
+gitgitlab will try to connect to <your server url>/api/v3
+
 
 Command overview
 ----------------

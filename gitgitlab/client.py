@@ -3,7 +3,19 @@
 import re
 
 from gitlab import Gitlab
-from git import Repo
+from git import Repo, InvalidGitRepositoryError
+from git.remote import NoOptionError
+
+
+def get_custom_gitlab_url():
+    """Return the custom gitlab uri from the configuration."""
+    try:
+        repo = Repo('.')
+        return repo.config_reader().get_value('gitlab', 'url')
+    except InvalidGitRepositoryError:
+        raise NotFound("No git repository")
+    except NoOptionError:
+        raise NotFound("No custom uri configured")
 
 
 class GitlabException(Exception):
@@ -13,7 +25,7 @@ class GitlabException(Exception):
     pass
 
 
-class NotFound(Exception):
+class NotFound(GitlabException):
 
     """The item looked for was not found."""
 
@@ -24,12 +36,19 @@ class GitlabClient(object):
 
     """Simple Gitlab client."""
 
-    def __init__(self, url='https://gitlab.com'):
+    def __init__(self, url=None):
         """Initialize the Gitlab client.
 
-        :param url: Base URL of the Gitlab server (https://gitlab.com by default)
+        :param url: Base URL of the Gitlab server. If not provided, it will look in the git config
+            for the url setting in the [gitlab] section. If not found, it will use https://gitlab.com
 
         """
+        if url is None:
+            try:
+                url = get_custom_gitlab_url()
+                print 'Using Gittab server at {0}'.format(url)
+            except NotFound:
+                url = 'https://gitlab.com'
         self._url = url
         self._gitlab = None
 
@@ -131,6 +150,7 @@ class GitlabClient(object):
 
     @staticmethod
     def get_project_name_from_url(url):
+        """Extract the project name from the url and return it."""
         return re.search(r'/(\S+).git', url).groups()[0]
 
     def get_project_page(self, name=None):

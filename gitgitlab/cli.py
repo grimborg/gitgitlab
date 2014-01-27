@@ -21,7 +21,6 @@ def git():
     try:
         dispatch()
     except Exception, e:
-        raise
         sys.exit(e)
 
 
