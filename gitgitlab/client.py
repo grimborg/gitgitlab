@@ -46,11 +46,15 @@ class GitlabClient(object):
         if url is None:
             try:
                 url = get_custom_gitlab_url()
-                print 'Using Gittab server at {0}'.format(url)
+                print 'Using Gitlab server at {0}'.format(url)
             except NotFound:
                 url = 'https://gitlab.com'
         self._url = url
         self._gitlab = None
+
+    @property
+    def url(self):
+        return self._url
 
     def login(self, token):
         """Login to Gitlab.

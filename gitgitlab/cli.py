@@ -12,7 +12,7 @@ from gitgitlab.client import GitlabClient
 def get_gitlab():
     """Return a logged-in instance of the gitlab client."""
     gitlab = GitlabClient()
-    gitlab.login(get_token())
+    gitlab.login(get_token(gitlab.url))
     return gitlab
 
 
