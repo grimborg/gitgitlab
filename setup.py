@@ -1,9 +1,9 @@
-"""gitgitlab: git plugin for GitLab."""
+"""GitGitlab: git plugin for GitLab."""
 
 from setuptools import setup
 
 setup(
-    name='gitgitlab',
+    name='GitGitlab',
     version='1.1',
     description='gitlab for git',
     packages=['gitgitlab'],
