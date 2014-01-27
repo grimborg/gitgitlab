@@ -45,6 +45,10 @@ Configure your custom Gitlab server only for the current repository:
 
 gitgitlab will try to connect to <your server url>/api/v3
 
+.. note::
+
+	gitgitlab will only use your custom Gitlab server when inside of a git repository.
+
 
 Command overview
 ----------------
