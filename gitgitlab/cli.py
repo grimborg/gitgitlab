@@ -5,7 +5,7 @@ import sys
 from opster import command, dispatch
 import webbrowser
 
-from gitgitlab.auth import get_token
+from gitgitlab.auth import get_token, reset_token
 from gitgitlab.client import GitlabClient
 
 
@@ -39,6 +39,11 @@ def open(project_name=None):
     url = gitlab.get_project_page(project_name)
     print 'Open {0}'.format(url)
     webbrowser.open(url)
+
+
+@command()
+def auth():
+    reset_token()
 
 
 @command()

@@ -1,20 +1,26 @@
 """Interface to Gitlab and Git."""
 
+from ConfigParser import NoSectionError
 import re
 
 from gitlab import Gitlab
 from git import Repo, InvalidGitRepositoryError
 from git.remote import NoOptionError
 
+DEFAULT_GITLAB_URL = 'https://gitlab.com'
+
 
 def get_custom_gitlab_url():
-    """Return the custom gitlab uri from the configuration."""
+    """Return the custom gitlab uri from the git configuration.
+
+    :raises: NotFound if no custom GitLab URL is configured.
+    """
     try:
         repo = Repo('.')
         return repo.config_reader().get_value('gitlab', 'url')
     except InvalidGitRepositoryError:
-        raise NotFound("No git repository")
-    except NoOptionError:
+        raise NotFound("Not a git repository")
+    except (NoOptionError, NoSectionError):
         raise NotFound("No custom uri configured")
 
 
@@ -48,12 +54,13 @@ class GitlabClient(object):
                 url = get_custom_gitlab_url()
                 print 'Using Gitlab server at {0}'.format(url)
             except NotFound:
-                url = 'https://gitlab.com'
+                url = DEFAULT_GITLAB_URL
         self._url = url
         self._gitlab = None
 
     @property
     def url(self):
+        """Base URL of the GitLab server."""
         return self._url
 
     def login(self, token):
@@ -154,7 +161,10 @@ class GitlabClient(object):
 
     @staticmethod
     def get_project_name_from_url(url):
-        """Extract the project name from the url and return it."""
+        """Extract the project name from the url and return it.
+
+        :param str url: A project URL.
+        """
         return re.search(r'/(\S+).git', url).groups()[0]
 
     def get_project_page(self, name=None):
