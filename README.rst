@@ -61,6 +61,8 @@ Command overview
 	Set this project as remote for your local repository.
 **git lab open <project name>**
 	Open a Gitlab project page. If <project name> is omitted, uses the project on the 'gitlab' remote of the repository on the current directory.
+**git lab auth**
+	Reset the Gitlab authorization token.
 
 Listing your projects
 ----------------------
