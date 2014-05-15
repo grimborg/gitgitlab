@@ -72,7 +72,7 @@ Obtaining help
 Using it from Python
 --------------------
 
-To use gitgitlab from Python, import :mod:`gitgitlab.client`.
+To use gitgitlab from Python, import `gitgitlab.client <http://gitgitlab.readthedocs.org/en/latest/gitgitlab.html#module-gitgitlab.client>`_.
 
 Using a custom Gitlab server
 ----------------------------
