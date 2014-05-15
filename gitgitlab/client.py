@@ -203,3 +203,16 @@ class GitlabClient(object):
         if url.endswith('.git'):
             url = url[:-4]
         return url
+
+    def clone(self, name, path=None):
+        """Clone a Gitlab project.
+
+        :param name: Identifier name of the project to clone.
+        :param path: Path to clone to (deufaults to the project name).
+        """
+        if path is None:
+            path = name
+        project = self.get_project(name)
+        url = project.ssh_url_to_repo
+        print "Cloning {} to {}".format(url, path)
+        Repo.clone_from(url, path)

@@ -6,7 +6,7 @@ from opster import command, dispatch
 import webbrowser
 
 from gitgitlab.auth import get_token, reset_token
-from gitgitlab.client import GitlabClient, Unauthorized, AuthenticationError
+from gitgitlab.client import GitlabClient, Unauthorized, AuthenticationError, NotFound
 
 
 def get_gitlab():
@@ -49,15 +49,29 @@ def list():
 def open(project_name=None):
     """Open the project page on the default web browser."""
     gitlab = get_gitlab()
-    url = gitlab.get_project_page(project_name)
-    print 'Open {0}'.format(url)
-    webbrowser.open(url)
+    try:
+        url = gitlab.get_project_page(project_name)
+    except NotFound:
+        sys.exit("The project {} was not found.".format(project_name))
+    else:
+        print 'Opening {0}'.format(url)
+        webbrowser.open(url)
 
 
 @command()
 def auth():
     """Reset the authentication token."""
     reset_token()
+
+
+@command()
+def clone(project_name, path=None):
+    """Clone a Gitlab project."""
+    gitlab = get_gitlab()
+    try:
+        gitlab.clone(project_name, path)
+    except NotFound:
+        sys.exit("The project {} was not found.".format(project_name))
 
 
 @command()
