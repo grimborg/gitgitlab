@@ -21,7 +21,7 @@ Usage
 	$ git touch 'readme.txt'
 	$ git add readme.txt
 	$ git commit -am 'initial commit'
-	$ git lab create my_project -t
+	$ git lab create -t my_project
 	  Project my_project created on Gitlab
 	$ git remotes
 	  gitlab
@@ -73,6 +73,8 @@ Command overview
 	Set this project as remote for your local repository.
 **git lab open <project name>**
 	Open a Gitlab project page. If <project name> is omitted, uses the project on the 'gitlab' remote of the repository on the current directory.
+**git lab auth**
+	Reset the Gitlab authorization token.
 
 Listing your projects
 ----------------------

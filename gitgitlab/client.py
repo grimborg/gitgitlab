@@ -3,9 +3,11 @@
 from ConfigParser import NoSectionError
 import re
 
-from gitlab import Gitlab
+import gitlab
 from git import Repo, InvalidGitRepositoryError
 from git.remote import NoOptionError
+
+__all__ = ['DEFAULT_GITLAB_URL', 'GitlabException', 'NotFound', 'GitlabClient']
 
 DEFAULT_GITLAB_URL = 'https://gitlab.com'
 
@@ -34,6 +36,20 @@ class GitlabException(Exception):
 class NotFound(GitlabException):
 
     """The item looked for was not found."""
+
+    pass
+
+
+class Unauthorized(GitlabException):
+
+    """Authentication was not authorized."""
+
+    pass
+
+
+class AuthenticationError(GitlabException):
+
+    """Authentication failed."""
 
     pass
 
@@ -69,7 +85,14 @@ class GitlabClient(object):
         :param token: The user's Gitlab private token.
 
         """
-        self._gitlab = Gitlab(self._url, token)
+        self._gitlab = gitlab.Gitlab(self._url, token)
+        try:
+            self._gitlab.auth()
+        except gitlab.GitlabAuthenticationError, e:
+            if e.message.startswith('401'):
+                raise Unauthorized(e.message)
+            else:
+                raise AuthenticationError(e.message)
 
     def get_projects(self):
         """Fetch the projects owned by the user.

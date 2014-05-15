@@ -6,14 +6,27 @@ from opster import command, dispatch
 import webbrowser
 
 from gitgitlab.auth import get_token, reset_token
-from gitgitlab.client import GitlabClient
+from gitgitlab.client import GitlabClient, Unauthorized, AuthenticationError
 
 
 def get_gitlab():
-    """Return a logged-in instance of the gitlab client."""
+    """Return a logged-in instance of the gitlab client.
+
+    Authenticate the client. If the authentication fails with an Unauthorized error,
+    ask the user to provide the token again and retry.
+    """
     gitlab = GitlabClient()
-    gitlab.login(get_token(gitlab.url))
-    return gitlab
+    try:
+        gitlab.login(get_token(gitlab.url))
+    except Unauthorized, e:
+        print "Could not authenticate with Gitlab: {}".format(e.message)
+        print "It looks like your token is wrong."
+        reset_token()
+        return get_gitlab()
+    except AuthenticationError, e:
+        sys.exit("Could not authenticate with Gitlab: {}".format(e.message))
+    else:
+        return gitlab
 
 
 def git():
@@ -34,7 +47,7 @@ def list():
 
 @command()
 def open(project_name=None):
-    """Open the project page in the default web browser."""
+    """Open the project page on the default web browser."""
     gitlab = get_gitlab()
     url = gitlab.get_project_page(project_name)
     print 'Open {0}'.format(url)
@@ -43,6 +56,7 @@ def open(project_name=None):
 
 @command()
 def auth():
+    """Reset the authentication token."""
     reset_token()
 
 
