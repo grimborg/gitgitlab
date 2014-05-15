@@ -61,6 +61,11 @@ Setting up an existing project to track the local repository
 
 **git lab track <project_name>** Adds a gitlab project as remote.
 
+Opening the project page
+------------------------
+
+**git lab open <project_name>** Opens the project page on the default browser.
+
 Cloning a project
 -----------------
 
