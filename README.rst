@@ -1,8 +1,9 @@
 GitGitLab: Gitlab Git Plugin
 ============================
 
-GitGitLab allows you to create Gitlab projects and set them as remote source for your git checkouts.
+GitGitLab allows you to integrate Gitlab in your git flow.
 
+With GitGitlab, you can create projects, clone them and set them as remote source without leaving the command line.
 
 Installation
 ------------
@@ -12,8 +13,8 @@ Installation
 	sudo pip install gitgitlab
 
 
-Usage
------
+Example
+-------
 
 .. code::
 
@@ -21,33 +22,10 @@ Usage
 	$ git touch 'readme.txt'
 	$ git add readme.txt
 	$ git commit -am 'initial commit'
-	$ git lab create my_project -t
+	$ git lab create -t my_project            # Creates project my_project and adds it as remote
 	  Project my_project created on Gitlab
 	$ git remotes
 	  gitlab
-
-Using a custom Gitlab server
-----------------------------
-
-By default, gitgitlab uses https://gitlab.com as the Gitlab server url. If you are using your own Gitlab server, you can configure it using git config.
-
-Configure your custom Gitlab server globally:
-
-.. code::
-
-	$ git config --global --replace-all gitlab.url <your server url>
-
-Configure your custom Gitlab server only for the current repository:
-
-.. code::
-
-	$ git config --replace-all gitlab.url <your server url>
-
-gitgitlab will try to connect to <your server url>/api/v3
-
-.. note::
-
-	gitgitlab will only use your custom Gitlab server when inside of a git repository.
 
 
 Command overview
@@ -90,6 +68,30 @@ Obtaining help
 	Overview.
 **git lab <command> --help**
 	Help for a specific command.
+
+Using it from Python
+--------------------
+
+To use gitgitlab from Python, import :mod:`gitgitlab.client`.
+
+Using a custom Gitlab server
+----------------------------
+
+By default, gitgitlab uses https://gitlab.com as the Gitlab server url. If you are using your own Gitlab server, you can configure it using git config.
+
+Configure your custom Gitlab server globally:
+
+.. code::
+
+	$ git config --global --replace-all gitlab.url <your server url>
+
+Configure your custom Gitlab server only for the current repository:
+
+.. code::
+
+	$ git config --replace-all gitlab.url <your server url>
+
+gitgitlab will try to connect to <your server url>/api/v3
 
 More information
 ----------------

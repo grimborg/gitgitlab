@@ -1,8 +1,9 @@
 GitGitLab: Gitlab Git Plugin
 ============================
 
-GitGitLab allows you to create Gitlab projects and set them as remote source for your git checkouts.
+GitGitLab allows you to integrate Gitlab in your git flow.
 
+With GitGitlab, you can create projects, clone them and set them as remote source without leaving the command line.
 
 Installation
 ------------
@@ -12,8 +13,8 @@ Installation
 	sudo pip install gitgitlab
 
 
-Usage
------
+Example
+-------
 
 .. code::
 
@@ -21,46 +22,11 @@ Usage
 	$ git touch 'readme.txt'
 	$ git add readme.txt
 	$ git commit -am 'initial commit'
-	$ git lab create -t my_project
+	$ git lab create -t my_project            # Creates project my_project and adds it as remote
 	  Project my_project created on Gitlab
 	$ git remotes
 	  gitlab
 
-Using a custom Gitlab server
-----------------------------
-
-By default, gitgitlab uses https://gitlab.com as the Gitlab server url. If you are using your own Gitlab server, you can configure it using git config.
-
-Configure your custom Gitlab server globally:
-
-.. code::
-
-	$ git config --global --replace-all gitlab.url <your server url>
-
-Configure your custom Gitlab server only for the current repository:
-
-.. code::
-
-	$ git config --replace-all gitlab.url <your server url>
-
-gitgitlab will try to connect to <your server url>/api/v3
-
-.. note::
-
-	gitgitlab will only use your custom Gitlab server when inside of a git repository.
-
-Authentication
---------------
-
-In order to access your Gitlab projects, GitGitLab will ask for your Gitlab private token. You can find it on your `Gitlab account page <https://gitlab.com/profile/account>`_
-
-The token will be stored on your system's keyring using the `Python Keyring Lib <https://pypi.python.org/pypi/keyring#what-is-python-keyring-lib>`_. Depending on your operating system, the keyring will be:
-
-* OSX: OSX Keychain.
-* KDE: KDEKWallet.
-* Gnome 2: GnomeKeyring: for Gnome 2 environment.
-* Gnome 3 or newer KDE: SecretServiceKeyring.
-* Windows: WinVaultKeyring (Windows Credential Vault)
 
 Command overview
 ----------------
@@ -107,6 +73,26 @@ Using it from Python
 --------------------
 
 To use gitgitlab from Python, import :mod:`gitgitlab.client`.
+
+Using a custom Gitlab server
+----------------------------
+
+By default, gitgitlab uses https://gitlab.com as the Gitlab server url. If you are using your own Gitlab server, you can configure it using git config.
+
+Configure your custom Gitlab server globally:
+
+.. code::
+
+	$ git config --global --replace-all gitlab.url <your server url>
+
+Configure your custom Gitlab server only for the current repository:
+
+.. code::
+
+	$ git config --replace-all gitlab.url <your server url>
+
+gitgitlab will try to connect to <your server url>/api/v3
+
 
 See more:
 
