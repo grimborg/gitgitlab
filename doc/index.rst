@@ -61,6 +61,11 @@ Setting up an existing project to track the local repository
 
 **git lab track <project_name>** Adds a gitlab project as remote.
 
+Cloning a project
+-----------------
+
+**git lab clone <project_name>** Clones the project.
+
 Obtaining help
 --------------
 
