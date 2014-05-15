@@ -1,7 +1,7 @@
 GitGitLab: Gitlab Git Plugin
 ============================
 
-GitGitLab allows you to integrate Gitlab in your git flow.
+GitGitLab integrates Gitlab in your git flow.
 
 With GitGitlab, you can create projects, clone them and set them as remote source without leaving the command line.
 
