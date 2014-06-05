@@ -1,15 +1,28 @@
 """Interface to Gitlab and Git."""
 
 from ConfigParser import NoSectionError
+import os
 import re
 
 import gitlab
 from git import Repo, InvalidGitRepositoryError
+from git.config import GitConfigParser
+
 from git.remote import NoOptionError
 
 __all__ = ['DEFAULT_GITLAB_URL', 'GitlabException', 'NotFound', 'GitlabClient']
 
 DEFAULT_GITLAB_URL = 'https://gitlab.com'
+
+
+def get_global_config_parser(read_only=True):
+    """Return the global config parser.
+
+    :param bool read_only: Return a read only config parser.
+    :return: A `~git.GitConfigParser` object for ~/.gitconfig.
+    """
+    path = os.path.normpath(os.path.expanduser("~/.gitconfig"))
+    return GitConfigParser(path, read_only=read_only)
 
 
 def get_custom_gitlab_url():
@@ -19,9 +32,13 @@ def get_custom_gitlab_url():
     """
     try:
         repo = Repo('.')
-        return repo.config_reader().get_value('gitlab', 'url')
     except InvalidGitRepositoryError:
-        raise NotFound("Not a git repository")
+        config_reader = get_global_config_parser()
+    else:
+        config_reader = repo.config_reader()
+
+    try:
+        config_reader.get_value('gitlab', 'url')
     except (NoOptionError, NoSectionError):
         raise NotFound("No custom uri configured")
 
