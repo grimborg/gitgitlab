@@ -38,10 +38,20 @@ def get_custom_gitlab_url():
         config_reader = repo.config_reader()
 
     try:
-        config_reader.get_value('gitlab', 'url')
+        return config_reader.get_value('gitlab', 'url')
     except (NoOptionError, NoSectionError):
         raise NotFound("No custom uri configured")
 
+
+def get_gitlab_url():
+    """Return the URL of the gitlab server to use.
+
+    :return: str
+    """
+    try:
+        return get_custom_gitlab_url()
+    except NotFound:
+        return DEFAULT_GITLAB_URL
 
 class GitlabException(Exception):
 
@@ -83,11 +93,7 @@ class GitlabClient(object):
 
         """
         if url is None:
-            try:
-                url = get_custom_gitlab_url()
-                print 'Using Gitlab server at {0}'.format(url)
-            except NotFound:
-                url = DEFAULT_GITLAB_URL
+            url = get_gitlab_url()
         self._url = url
         self._gitlab = None
 

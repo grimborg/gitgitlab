@@ -5,7 +5,7 @@ import keyring
 from urlparse import urljoin
 import webbrowser
 
-from gitgitlab.client import DEFAULT_GITLAB_URL
+from gitgitlab import client
 
 KEYRING_NAME = 'gitgitlab'
 
@@ -17,12 +17,14 @@ class AuthException(Exception):
     pass
 
 
-def get_token(gitlab_uri=DEFAULT_GITLAB_URL):
+def get_token(gitlab_uri=None):
     """Get the token from the keyring. If there is no token, request it and store it.
 
-    :param str gitlab_uri: URI of the Gitlab server (by default, )
+    :param str gitlab_uri: URI of the Gitlab server. By default, it takes the URI from the configuration.
     :return str: The user's Gitlab token.
     """
+    if gitlab_uri is None:
+        gitlab_uri = client.get_gitlab_url()
     token = keyring.get_password(KEYRING_NAME, gitlab_uri)
     if not token:
         reset_token(gitlab_uri)
@@ -30,13 +32,16 @@ def get_token(gitlab_uri=DEFAULT_GITLAB_URL):
     return token
 
 
-def reset_token(gitlab_uri=DEFAULT_GITLAB_URL):
+def reset_token(gitlab_uri=None):
     """Request the token from the user and store it in the keyring.
 
-    :param str gitlab_uri: URI of the Gitlab server (by default, )
+    :param str gitlab_uri: URI of the Gitlab server. By default, it takes the URI from the configuration.
+
     :raise AuthException: if the token could not be obtained from the user.
 
     """
+    if gitlab_uri is None:
+        gitlab_uri = client.get_gitlab_url()
     account_url = urljoin(gitlab_uri, 'profile/account')
     print 'Please provide your Gitlab token. You can find it on your account page, {}'.format(
         account_url)
